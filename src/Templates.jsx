@@ -137,7 +137,7 @@ const MainContainer = styled.div`
 
 const Header = styled.h1`
 	font-family: "PPMondwest-regular";
-	color: #e987aa;
+	color: #ecece1;
 	text-align: center;
 	margin: 50px;
 	font-size: 50px;
@@ -157,7 +157,7 @@ const ColourPickerContainer = styled.div`
 
 const TemplateContainer = styled.div`
 	width: 300px;
-	height: 720px;
+	height: 750px;
 	margin: 10px 0;
 	padding: 5px 10px;
 	background-color: ${(props) => props.colourpicked || "#0b0a0a"};

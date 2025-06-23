@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { PhotoboothContext } from "./AppContext";
 import { useNavigate } from "react-router";
@@ -36,19 +36,6 @@ const Camera = () => {
 			console.error("Camera access denied or error:", err);
 		}
 	};
-
-	// const handleCloseCamera = () => {
-	// 	if (stream) {
-	// 		stream.getTracks().forEach((track) => track.stop());
-	// 		if (videoRef.current) {
-	// 			videoRef.current.srcObject = null;
-	// 			setIsCameraOpen(false);
-	// 		}
-	// 		setIsCameraOpen(false);
-	// 	}
-
-	// 	setIsCameraOpen(false);
-	// };
 
 	const takePhoto = async () => {
 		const photos = [];
@@ -99,6 +86,16 @@ const Camera = () => {
 		navigate("/templates");
 	};
 
+	useEffect(() => {
+		gsap.to(".container", {
+			scrollTrigger: ".container",
+			y: -500,
+			scrub: 1,
+			ease: "power1",
+		});
+	}, []);
+
+
 	return (
 		<>
 			<Tooltip
@@ -118,7 +115,7 @@ const Camera = () => {
 			</Tooltip>
 			<MainContainer>
 				{!isCameraOpen && !hasTakenPhotos && (
-					<div>
+					<div className="container">
 						<Button onClick={handleCameraPermission}>
 							Allow permission to access camera?
 						</Button>
@@ -130,6 +127,7 @@ const Camera = () => {
 				<Container>
 					<CameraContainer>
 						<Video
+							className="camera"
 							ref={videoRef}
 							autoPlay
 							id="camera"
@@ -207,7 +205,7 @@ const Video = styled.video`
 const CountDownButton = styled.button`
 	background-color: transparent;
 	outline: none;
-	color: #e987aa;
+	color: #ecece1;
 	padding: 10px;
 	border: none;
 	font-size: 20px;
@@ -268,7 +266,7 @@ const Buttons = styled.button`
 
 const ArrowImage = styled.img`
 	transform: rotate(180deg);
-	height: 70px;
+	height: 60px;
 	margin: 40px;
 	cursor: pointer;
 `;
