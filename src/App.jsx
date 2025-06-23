@@ -3,16 +3,19 @@ import GlobalStyle from "./GlobalStyle";
 import Home from "./Home";
 import Templates from "./Templates";
 import Camera from "./Camera";
+import { StyleSheetManager } from "styled-components";
 
 const App = () => {
 	return (
 		<BrowserRouter>
-			<GlobalStyle />
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/templates" element={<Templates />} />
-				<Route path="/camera" element={<Camera />} />
-			</Routes>
+			<StyleSheetManager shouldForwardProp={(prop) => prop}>
+				<GlobalStyle />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/camera" element={<Camera />} />
+					<Route path="/templates" element={<Templates />} />
+				</Routes>
+			</StyleSheetManager>
 		</BrowserRouter>
 	);
 };
