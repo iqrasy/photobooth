@@ -22,7 +22,9 @@ const Camera = () => {
 	const handleCameraPermission = async () => {
 		try {
 			const mediaStream = await navigator.mediaDevices.getUserMedia({
-				video: true,
+				video: {
+					facingMode: "user", // 👈 front-facing camera
+				},
 				audio: false,
 			});
 			setStream(mediaStream);
@@ -214,7 +216,11 @@ const CameraContainer = styled.div`
 	}
 `;
 
-const Video = styled.video`
+const Video = styled.video.attrs(() => ({
+	autoPlay: true,
+	muted: true,
+	playsInline: true,
+}))`
 	border-radius: 10px;
 	width: 100%;
 	max-width: 500px;
