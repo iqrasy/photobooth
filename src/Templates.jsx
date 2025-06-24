@@ -190,7 +190,7 @@ const MainContainer = styled.div`
 	align-items: flex-start;
 	flex-direction: row;
 	margin: 10px;
-	gap: 50px;
+	gap: 20px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		flex-direction: column;
@@ -202,7 +202,7 @@ const Header = styled.h1`
 	font-family: "PPMondwest-regular";
 	color: #ecece1;
 	text-align: center;
-	margin: 50px;
+	margin-top: 50px;
 	font-size: 50px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
