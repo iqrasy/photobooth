@@ -238,8 +238,6 @@ const TemplateContainer = styled.div`
 	}
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		/* width: 300px; */
-		height: 600px;
 		margin: 6px;
 	}
 `;
@@ -251,8 +249,6 @@ const ImageContainer = styled.div`
 	border-radius: 3px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		width: 200px;
-		/* height: 150px; */
 		margin: 6px;
 	}
 `;
