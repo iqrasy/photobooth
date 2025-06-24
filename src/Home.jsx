@@ -85,7 +85,7 @@ const Header = styled.h1`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		font-size: 35px;
-		width: 300px;
+		width: 350px;
 	}
 `;
 
