@@ -6,6 +6,7 @@ import arrow from "./assets/right-arrow.png";
 import Tooltip from "@mui/material/Tooltip";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { theme } from "./Theme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -89,12 +90,11 @@ const Camera = () => {
 	useEffect(() => {
 		gsap.to(".container", {
 			scrollTrigger: ".container",
-			y: -500,
+			y: -300,
 			scrub: 1,
 			ease: "power1",
 		});
 	}, []);
-
 
 	return (
 		<>
@@ -133,26 +133,26 @@ const Camera = () => {
 							id="camera"
 							iscameraopen={CSSMathValue.toString(isCameraOpen)}
 						/>
-						<ButtonContainer>
-							{isCameraOpen && <Buttons onClick={takePhoto}>start</Buttons>}
-							{photoList.length > 0 && (
-								<Buttons onClick={handleNextStep}>next</Buttons>
-							)}
-						</ButtonContainer>
+						{photoList.length > 0 && (
+							<>
+								<CapturedImagesContainer>
+									{photoList.map((photo, index) => (
+										<CapturedImages
+											key={index}
+											src={photo}
+											alt={`Captured ${index + 1}`}
+										/>
+									))}
+								</CapturedImagesContainer>
+							</>
+						)}
 					</CameraContainer>
-					{photoList.length > 0 && (
-						<>
-							<CapturedImagesContainer>
-								{photoList.map((photo, index) => (
-									<CapturedImages
-										key={index}
-										src={photo}
-										alt={`Captured ${index + 1}`}
-									/>
-								))}
-							</CapturedImagesContainer>
-						</>
-					)}
+					<ButtonContainer>
+						{isCameraOpen && <Buttons onClick={takePhoto}>start</Buttons>}
+						{photoList.length >= 3 && (
+							<Buttons onClick={handleNextStep}>next</Buttons>
+						)}
+					</ButtonContainer>
 				</Container>
 			</MainContainer>
 		</>
@@ -182,16 +182,37 @@ const Button = styled.button`
 	font-size: 20px;
 	cursor: pointer;
 	font-family: "ppneuebit-bold";
+	transition: all 0.6s ease;
+
+	&:hover {
+		border-radius: 10px;
+		background-color: #e987aa;
+		transition: all 0.3s ease-in-out;
+	}
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		font-size: 17px;
+	}
 `;
 
 const Container = styled.div`
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: center;
-	align-items: flex-start;
+	align-items: center;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		flex-direction: column;
+	}
 `;
 
-const CameraContainer = styled.div``;
+const CameraContainer = styled.div`
+	display: flex;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		flex-direction: column;
+	}
+`;
 
 const Video = styled.video`
 	border-radius: 10px;
@@ -200,6 +221,10 @@ const Video = styled.video`
 	height: auto;
 	transform: scaleX(-1);
 	display: ${({ iscameraopen }) => (iscameraopen ? "block" : "none")};
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		max-width: 300px;
+	}
 `;
 
 const CountDownButton = styled.button`
@@ -211,22 +236,16 @@ const CountDownButton = styled.button`
 	font-size: 20px;
 `;
 
-const CloseButton = styled.button`
-	background-color: #ecece1;
-	color: #1b1c19;
-	border: solid #1b1c19 1px;
-	padding: 10px;
-	margin: 10px 0;
-	width: 50px;
-	float: left;
-`;
-
 const CapturedImagesContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	height: auto;
 	pointer-events: none;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		flex-direction: row;
+	}
 `;
 
 const CapturedImages = styled.img`
@@ -245,6 +264,11 @@ const CapturedImages = styled.img`
 			transform: scale(1);
 		}
 	}
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		width: 90px;
+		margin: 6px;
+	}
 `;
 
 const ButtonContainer = styled.div`
@@ -262,6 +286,13 @@ const Buttons = styled.button`
 	margin: 10px 5px;
 	font-family: "ppneuebit-bold";
 	cursor: pointer;
+	transition: all 0.6s ease;
+
+	&:hover {
+		border-radius: 10px;
+		background-color: #e987aa;
+		transition: all 0.3s ease-in-out;
+	}
 `;
 
 const ArrowImage = styled.img`
@@ -269,4 +300,8 @@ const ArrowImage = styled.img`
 	height: 60px;
 	margin: 40px;
 	cursor: pointer;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		height: 30px;
+	}
 `;

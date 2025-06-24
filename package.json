@@ -3,13 +3,11 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-  "homepage": "https://iqrasy.github.io/photobooth",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
 		"lint": "eslint .",
-		"preview": "vite preview",
-		"deploy": "gh-pages -d dist"
+		"preview": "vite preview"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",
@@ -25,7 +23,8 @@
 		"react-router-dom": "^7.6.2",
 		"react-tooltip": "^5.29.1",
 		"react-typed": "^2.0.12",
-		"styled-components": "^6.1.18"
+		"styled-components": "^6.1.18",
+		"use-debounce": "^10.0.5"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.25.0",

@@ -1,6 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 import cursor from "./assets/cursor.png";
-import background from "./assets/background.gif";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -37,10 +36,6 @@ body {
  max-width: 100vw;
  margin: 0;
  background-color: #450920;
-	/* background-image: url(${background});
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat; */
  cursor: url("${cursor}"), auto;
 }
 

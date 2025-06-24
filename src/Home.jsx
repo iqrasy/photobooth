@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import styled from "styled-components";
+import Stars from "./Stars";
 import { useNavigate } from "react-router";
 import { gsap } from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { theme } from "./Theme";
 
-gsap.registerPlugin(ScrambleTextPlugin, ScrollTrigger);
+gsap.registerPlugin(ScrambleTextPlugin);
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -36,6 +37,7 @@ const Home = () => {
 
 	return (
 		<MainContainer>
+			<Stars />
 			<InnerContainer>
 				<Header id="scramble-text-original">
 					<p id="text-scramble__text" aria-hidden="true">
@@ -80,6 +82,11 @@ const Header = styled.h1`
 	.highlight {
 		font-style: italic;
 	}
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		font-size: 35px;
+		width: 300px;
+	}
 `;
 
 const Button = styled.button`
@@ -95,5 +102,11 @@ const Button = styled.button`
 
 	&:hover {
 		border-radius: 10px;
+		background-color: #e987aa;
+		transition: all 0.3s ease-in-out;
+	}
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		font-size: 17px;
 	}
 `;

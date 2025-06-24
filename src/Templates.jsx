@@ -1,38 +1,85 @@
 import styled from "styled-components";
 import { HexColorInput, HexColorPicker } from "react-colorful";
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import "./styles.css";
 import { PhotoboothContext } from "./AppContext";
 import html2canvas from "html2canvas";
+import { useDebouncedCallback } from "use-debounce";
 import { gsap } from "gsap";
-
-import { Draggable } from "gsap/Draggable";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { SplitText } from "gsap/SplitText";
+import { theme } from "./Theme";
 
-gsap.registerPlugin(
-	Draggable,
-	ScrambleTextPlugin,
-	ScrollTrigger,
-	ScrollToPlugin,
-	SplitText
-);
+gsap.registerPlugin(ScrambleTextPlugin);
+const mm = gsap.matchMedia();
 
 const Templates = () => {
 	const [showColourPicker, setShowColourPicker] = useState(true);
 	const [download, setDownload] = useState(false);
-	// const [disabled, setDisabled] = useState(false);
 	const { colour, setColour, setText } = useContext(PhotoboothContext);
 	const images = JSON.parse(localStorage.getItem("photo-series") || "[]");
 	const templateRef = useRef();
+	const colourPickerRef = useRef(null);
+
+	useEffect(() => {
+		if (showColourPicker) {
+			gsap.set("#scramble-text-2", { opacity: 1 });
+
+			gsap.to("#scramble-text-2", {
+				scrambleText: {
+					text: "build your template",
+					chars: "upperCase",
+					speed: 0.4,
+				},
+				duration: 1.5,
+			});
+		} else {
+			gsap.set("#scramble-text-1", { opacity: 1 });
+
+			gsap.to("#scramble-text-1", {
+				scrambleText: {
+					text: "download your picture",
+					chars: "upperCase",
+					speed: 0.4,
+				},
+				duration: 1.5,
+			});
+		}
+	}, [showColourPicker]);
 
 	const handleSave = () => {
-		setShowColourPicker(false);
-		setDownload(true);
+		mm.add(
+			{
+				isMobile: "(max-width: 576px)",
+				isDesktop: "(min-width: 769px)",
+			},
+			(context) => {
+				const { isMobile } = context.conditions;
+				const { isDesktop } = context.conditions;
 
-		// if (!colour) setDisabled(true);
+				gsap.to(colourPickerRef.current, {
+					y: 500,
+					opacity: 0,
+					duration: 0.6,
+					ease: "power2.out",
+					onComplete: () => {
+						setShowColourPicker(false);
+						setDownload(true);
+
+						gsap.fromTo(
+							templateRef.current,
+							{ y: 0, opacity: 0, duration: 0.6, ease: "power2.out" },
+							{
+								y: isMobile ? 0 : 200,
+								x: isDesktop ? -30 : 0,
+								opacity: 1,
+								duration: 0.6,
+								ease: "power2.out",
+							}
+						);
+					},
+				});
+			}
+		);
 	};
 
 	const handleChange = (e) => {
@@ -57,22 +104,33 @@ const Templates = () => {
 		document.body.removeChild(link);
 	};
 
+	const debouncedSetColour = useDebouncedCallback((color) => {
+		setColour(color);
+	}, 50);
+
 	return (
 		<>
-			{!showColourPicker ? (
-				<Header>DOWNLOAD YOUR TEMPLATE</Header>
-			) : (
-				<Header>BUILD YOUR TEMPLATE</Header>
-			)}
+			<Header id="scramble-text-original">
+				<p id="text-scramble__text" aria-hidden="true">
+					<span
+						id="scramble-text-2"
+						style={{ display: showColourPicker ? "inline" : "none" }}
+					></span>
+					<span
+						id="scramble-text-1"
+						style={{ display: !showColourPicker ? "inline" : "none" }}
+					></span>
+				</p>
+			</Header>
 
 			<MainContainer>
-				<ColourPickerContainer>
+				<ColourPickerContainer ref={colourPickerRef}>
 					{showColourPicker && (
 						<>
 							<section className="custom-layout example">
 								<HexColorPicker
 									color={colour}
-									onChange={setColour}
+									onChange={debouncedSetColour}
 									placeholder="Type a color"
 								/>
 							</section>
@@ -80,7 +138,7 @@ const Templates = () => {
 								id={colour}
 								name={colour}
 								color={colour}
-								onChange={setColour}
+								onChange={debouncedSetColour}
 								prefixed
 								className="input"
 							/>
@@ -115,9 +173,9 @@ const Templates = () => {
 			</MainContainer>
 			<ButtonContainer>
 				{download ? (
-					<Buttons onClick={handleDownload}>Download Printout</Buttons>
+					<Buttons onClick={handleDownload}>download your picture</Buttons>
 				) : (
-					<Buttons onClick={handleSave}> save & continue</Buttons>
+					<Buttons onClick={handleSave}>save & continue</Buttons>
 				)}
 			</ButtonContainer>
 		</>
@@ -133,6 +191,11 @@ const MainContainer = styled.div`
 	flex-direction: row;
 	margin: 10px;
 	gap: 50px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		flex-direction: column;
+		align-items: center;
+	}
 `;
 
 const Header = styled.h1`
@@ -141,6 +204,10 @@ const Header = styled.h1`
 	text-align: center;
 	margin: 50px;
 	font-size: 50px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		font-size: 35px;
+	}
 `;
 
 const ColourPickerContainer = styled.div`
@@ -160,9 +227,8 @@ const TemplateContainer = styled.div`
 	height: 750px;
 	margin: 10px 0;
 	padding: 5px 10px;
-	background-color: ${(props) => props.colourpicked || "#0b0a0a"};
+	background-color: ${(props) => props.colourpicked};
 	border-radius: 3px;
-	transition: all 0.5s ease-in-out;
 
 	.container {
 		display: flex;
@@ -171,8 +237,10 @@ const TemplateContainer = styled.div`
 		margin-top: 5px;
 	}
 
-	&:hover {
-		transform: ${(props) => (props.saved ? "rotate(-7deg)" : null)};
+	@media (max-width: ${theme.breakpoints.sm}) {
+		width: 235px;
+		height: 600px;
+		margin: 6px;
 	}
 `;
 
@@ -181,6 +249,12 @@ const ImageContainer = styled.div`
 	height: 200px;
 	margin: 5px 0px;
 	border-radius: 3px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		width: 200px;
+		height: 150px;
+		margin: 6px;
+	}
 `;
 
 const Input = styled.input`
@@ -209,11 +283,25 @@ const Buttons = styled.button`
 	padding: 10px;
 	margin: 10px 0;
 	font-family: "ppneuebit-bold";
-	/* cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")}; */
+	cursor: pointer;
+	transition: all 0.6s ease;
+	width: 190px;
+
+	&:hover {
+		border-radius: 10px;
+		background-color: #e987aa;
+		transition: all 0.3s ease-in-out;
+	}
 `;
 
 const ButtonContainer = styled.div`
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
+	align-items: end;
 	margin: 20px;
+	height: 300px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		height: 40px;
+	}
 `;

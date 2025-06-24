@@ -49,3 +49,14 @@
 	font-family: "ppneuebit-bold";
 	cursor: pointer;
 }
+
+@media (max-width: 576px) {
+	.custom-layout .react-colorful {
+		margin: 0;
+		height: 200px;
+	}
+
+	.input {
+		font-size: 17px;
+	}
+}
