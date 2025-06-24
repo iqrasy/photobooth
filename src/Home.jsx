@@ -27,7 +27,7 @@ const Home = () => {
 
 		tl.to("#scramble-text-1", {
 			scrambleText: {
-				text: "FOTOAUTOMAT",
+				text: "FOTOAUTOMATICA",
 				chars: "upperCase",
 				speed: 0.4,
 			},
