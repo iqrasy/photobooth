@@ -251,7 +251,7 @@ const ImageContainer = styled.div`
 	border-radius: 3px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		width: 200px;
+		width: 250px;
 		height: 150px;
 		margin: 6px;
 	}
