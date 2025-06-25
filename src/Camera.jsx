@@ -23,7 +23,7 @@ const Camera = () => {
 		try {
 			const mediaStream = await navigator.mediaDevices.getUserMedia({
 				video: {
-					facingMode: "user", // 👈 front-facing camera
+					facingMode: "user",
 				},
 				audio: false,
 			});
