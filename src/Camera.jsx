@@ -92,7 +92,7 @@ const Camera = () => {
 	useEffect(() => {
 		gsap.to(".container", {
 			scrollTrigger: ".container",
-			y: -300,
+			y: 100,
 			scrub: 1,
 			ease: "power1",
 		});
