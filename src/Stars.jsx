@@ -3,13 +3,8 @@ import star from "./assets/43.png";
 import { gsap } from "gsap";
 
 const Stars = () => {
-	// useMemo memorizes the result of a function
-	// without useMemo, a new random set would be generated on every render, causing flickering or unstability
 	const randomizedStars = useMemo(() => {
-		// creates a new array with 15 undefined elements which gives us something to map over
-		// we map over each of the 15 itmes to generate a random style object for each image
 		return Array.from({ length: 50 }).map(() => ({
-			// top: Math.floor(Math.random() * 90) + "%",
 			bottom: Math.floor(Math.random() * 90) + "%",
 			left: Math.floor(Math.random() * 90) + "%",
 			right: Math.floor(Math.random() * 90) + "%",
@@ -18,14 +13,19 @@ const Stars = () => {
 	}, []);
 
 	useEffect(() => {
-		gsap.to(".stars", {
-			rotation: 360,
-			duration: 15,
-			repeat: -1,
-			ease: "linear",
-			timeScale: 0.1,
+		const stars = gsap.utils.toArray(".stars");
+		stars.forEach((el, i) => {
+			gsap.to(el, {
+				rotation: i % 2 === 0 ? 360 : -360,
+				duration: 15,
+				repeat: -1,
+				ease: "linear",
+				timeScale: 0.1,
+				transformOrigin: "50% 50%",
+			});
 		});
 	}, []);
+
 	return (
 		<div>
 			{randomizedStars.map((style, index) => (
