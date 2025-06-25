@@ -89,14 +89,14 @@ const Camera = () => {
 		navigate("/templates");
 	};
 
-	useEffect(() => {
-		gsap.to(".container", {
-			scrollTrigger: ".container",
-			y: 100,
-			scrub: 1,
-			ease: "power1",
-		});
-	}, []);
+	// useEffect(() => {
+	// 	gsap.to(".container", {
+	// 		scrollTrigger: ".container",
+	// 		y: 100,
+	// 		scrub: 1,
+	// 		ease: "power1",
+	// 	});
+	// }, []);
 
 	return (
 		<>
@@ -171,6 +171,10 @@ const MainContainer = styled.div`
 	height: 100vh;
 	width: 100vw;
 	font-family: "ppneuebit-bold";
+
+	.container {
+		pointer-events: auto;
+	}
 `;
 
 const Button = styled.button`
