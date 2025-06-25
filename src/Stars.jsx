@@ -1,5 +1,5 @@
 import { useMemo, useEffect } from "react";
-import star from "./assets/46.png";
+import star from "./assets/43.png";
 import { gsap } from "gsap";
 
 const Stars = () => {
