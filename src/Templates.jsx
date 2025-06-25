@@ -257,11 +257,14 @@ const ImageContainer = styled.div`
 	height: 200px;
 	margin: 5px 0px;
 	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		margin: 6px;
+		margin: 6px auto;
 		width: 200px;
-		height: 200px;
+		height: 230px;
 	}
 `;
 
