@@ -243,7 +243,7 @@ const TemplateContainer = styled.div`
 	@media (max-width: ${theme.breakpoints.sm}) {
 		margin: 6px;
 		/* width: 250px; */
-		height: 700px;
+		height: 720px;
 	}
 `;
 
@@ -255,7 +255,7 @@ const ImageContainer = styled.div`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		margin: 6px;
-		width: 270px;
+		width: 230px;
 	}
 `;
 
