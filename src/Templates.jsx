@@ -8,6 +8,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { gsap } from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { theme } from "./Theme";
+import { useNavigate } from "react-router";
 
 gsap.registerPlugin(ScrambleTextPlugin);
 const mm = gsap.matchMedia();
@@ -19,6 +20,7 @@ const Templates = () => {
 	const images = JSON.parse(localStorage.getItem("photo-series") || "[]");
 	const templateRef = useRef();
 	const colourPickerRef = useRef(null);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (showColourPicker) {
@@ -173,7 +175,10 @@ const Templates = () => {
 			</MainContainer>
 			<ButtonContainer>
 				{download ? (
-					<Buttons onClick={handleDownload}>download your picture</Buttons>
+					<>
+						<Buttons onClick={handleDownload}>download your picture</Buttons>
+						<Buttons onClick={() => navigate("/camera")}>start over</Buttons>
+					</>
 				) : (
 					<Buttons onClick={handleSave}>save & continue</Buttons>
 				)}
@@ -255,8 +260,8 @@ const ImageContainer = styled.div`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		margin: 6px;
-		width: 230px;
-		height: 270px;
+		width: 200px;
+		height: 200px;
 	}
 `;
 
@@ -303,6 +308,7 @@ const ButtonContainer = styled.div`
 	align-items: end;
 	margin: 20px;
 	height: 300px;
+	gap: 20px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		height: 40px;
