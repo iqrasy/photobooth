@@ -242,8 +242,8 @@ const TemplateContainer = styled.div`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		margin: 6px;
-		/* width: 250px; */
-		height: 720px;
+		width: auto;
+		height: auto;
 	}
 `;
 
