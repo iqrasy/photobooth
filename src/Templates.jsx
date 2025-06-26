@@ -458,6 +458,7 @@ const DownloadContainerHeader = styled.p`
 	font-family: "PPMondwest-regular";
 	font-size: 50px;
 	text-shadow: 0 0 5px #e987aa;
+	text-align: center;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		font-size: 40px;
