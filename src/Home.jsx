@@ -5,8 +5,9 @@ import { useNavigate } from "react-router";
 import { gsap } from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { theme } from "./Theme";
+import { SplitText } from "gsap/all";
 
-gsap.registerPlugin(ScrambleTextPlugin);
+gsap.registerPlugin(ScrambleTextPlugin, SplitText);
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Home = () => {
 		tl.to("#scramble-text-1", {
 			scrambleText: {
 				text: "FOTOAUTOMATICA",
-				chars: "upperCase",
+				chars: "0123456789",
 				speed: 0.4,
 			},
 			duration: 1.5,
@@ -60,7 +61,6 @@ const MainContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	margin: 0 auto;
-	color: #e987aa;
 	height: 100vh;
 	width: 100vw;
 	min-height: 100vh;
@@ -70,43 +70,59 @@ const MainContainer = styled.div`
 const InnerContainer = styled.div`
 	gap: 10px;
 	font-family: "PPMondwest-regular";
+
+	h1 > div {
+		position: relative;
+		margin: 0;
+	}
+	.split-parent {
+		overflow: hidden;
+	}
+	.split-child {
+		display: inline-block;
+	}
 `;
 
 const Header = styled.h1`
 	font-family: "PPMondwest-regular";
 	text-align: center;
-	font-size: 55px;
-	background-color: #1b1c19;
-	width: 500px;
+	font-size: 50px;
+	color: #ecece1;
+	background-color: #e987aa;
+	width: 550px;
+	letter-spacing: 2px;
+	border: solid #ecece1 5px;
+	padding: 10px;
 
 	.highlight {
 		font-style: italic;
 	}
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		font-size: 35px;
-		width: 350px;
+		font-size: 30px;
+		width: 360px;
 	}
 `;
 
 const Button = styled.button`
-	background-color: #ecece1;
-	color: #1b1c19;
+	color: #ecece1;
 	font-family: "ppneuebit-bold";
 	width: 100%;
 	align-content: center;
 	height: 55px;
-	font-size: 21px;
+	font-size: 25px;
 	cursor: pointer;
 	transition: all 0.6s ease;
+	background-color: transparent;
+	border: none;
 
 	&:hover {
-		border-radius: 10px;
-		background-color: #e987aa;
+		color: #e987aa;
+		background-color: #ecece1;
 		transition: all 0.3s ease-in-out;
 	}
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		font-size: 17px;
+		font-size: 19px;
 	}
 `;

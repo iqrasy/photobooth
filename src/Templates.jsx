@@ -9,6 +9,8 @@ import { gsap } from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { theme } from "./Theme";
 import { useNavigate } from "react-router";
+import arrow from "./assets/right-arrow.png";
+import Tooltip from "@mui/material/Tooltip";
 
 gsap.registerPlugin(ScrambleTextPlugin);
 const mm = gsap.matchMedia();
@@ -16,7 +18,14 @@ const mm = gsap.matchMedia();
 const Templates = () => {
 	const [showColourPicker, setShowColourPicker] = useState(true);
 	const [download, setDownload] = useState(false);
-	const { colour, setColour, setText } = useContext(PhotoboothContext);
+	const {
+		colour,
+		setColour,
+		setText,
+		setPhotoList,
+		setRetakePictures,
+		setHasTakenPhotos,
+	} = useContext(PhotoboothContext);
 	const images = JSON.parse(localStorage.getItem("photo-series") || "[]");
 	const templateRef = useRef();
 	const colourPickerRef = useRef(null);
@@ -110,8 +119,33 @@ const Templates = () => {
 		setColour(color);
 	}, 50);
 
+	const handleNavigate = () => {
+		localStorage.removeItem("photo-series");
+		setPhotoList([]);
+		setHasTakenPhotos(false);
+		setRetakePictures(false);
+		navigate("/camera");
+	};
+
 	return (
 		<>
+			{!download && (
+				<Tooltip
+					title="back to camera"
+					slotProps={{
+						tooltip: {
+							sx: {
+								backgroundColor: "#ecece1",
+								color: "#1b1c19",
+								borderRadius: "5px",
+								fontSize: "12px",
+							},
+						},
+					}}
+				>
+					<ArrowImage src={arrow} onClick={handleNavigate} />
+				</Tooltip>
+			)}
 			<Header id="scramble-text-original">
 				<p id="text-scramble__text" aria-hidden="true">
 					<span
@@ -177,7 +211,7 @@ const Templates = () => {
 				{download ? (
 					<>
 						<Buttons onClick={handleDownload}>download your picture</Buttons>
-						<Buttons onClick={() => navigate("/camera")}>start over</Buttons>
+						<Buttons onClick={handleNavigate}>start over</Buttons>
 					</>
 				) : (
 					<Buttons onClick={handleSave}>save & continue</Buttons>
@@ -277,12 +311,12 @@ const Input = styled.input`
 	background-color: transparent;
 	text-align: center;
 	width: 91%;
-	color: white;
+	color: #ecece1;
 	font-size: 25px;
 	font-family: "ppneuebit-bold";
 
 	&::placeholder {
-		color: white;
+		color: #ecece1;
 	}
 `;
 
@@ -315,5 +349,16 @@ const ButtonContainer = styled.div`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		height: 40px;
+	}
+`;
+
+const ArrowImage = styled.img`
+	transform: rotate(180deg);
+	height: 60px;
+	margin: 40px;
+	cursor: pointer;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		height: 30px;
 	}
 `;

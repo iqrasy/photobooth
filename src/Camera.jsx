@@ -1,4 +1,4 @@
-import { useRef, useState, useContext, useEffect } from "react";
+import { useRef, useState, useContext } from "react";
 import styled from "styled-components";
 import { PhotoboothContext } from "./AppContext";
 import { useNavigate } from "react-router";
@@ -14,9 +14,15 @@ const Camera = () => {
 	const [isCameraOpen, setIsCameraOpen] = useState(false);
 	const [countdown, setCountdown] = useState(5);
 	const [isCountingDown, setIsCountingDown] = useState(false);
-	const [hasTakenPhotos, setHasTakenPhotos] = useState(false);
 	const [stream, setStream] = useState(null);
-	const { photoList, setPhotoList } = useContext(PhotoboothContext);
+	const {
+		photoList,
+		setPhotoList,
+		retakePictures,
+		setRetakePictures,
+		hasTakenPhotos,
+		setHasTakenPhotos,
+	} = useContext(PhotoboothContext);
 	const videoRef = useRef();
 
 	const handleCameraPermission = async () => {
@@ -75,6 +81,7 @@ const Camera = () => {
 			});
 		}
 		setHasTakenPhotos(true);
+		setRetakePictures(true);
 	};
 
 	const navigate = useNavigate();
@@ -89,14 +96,12 @@ const Camera = () => {
 		navigate("/templates");
 	};
 
-	// useEffect(() => {
-	// 	gsap.to(".container", {
-	// 		scrollTrigger: ".container",
-	// 		y: 100,
-	// 		scrub: 1,
-	// 		ease: "power1",
-	// 	});
-	// }, []);
+	const handleRetake = () => {
+		localStorage.removeItem("photo-series");
+		setPhotoList([]);
+		setHasTakenPhotos(false);
+		setRetakePictures(true);
+	};
 
 	return (
 		<>
@@ -116,13 +121,16 @@ const Camera = () => {
 				<ArrowImage src={arrow} onClick={() => navigate("/")} />
 			</Tooltip>
 			<MainContainer>
-				{!isCameraOpen && !hasTakenPhotos && (
-					<div className="container">
-						<Button onClick={handleCameraPermission}>
-							Allow permission to access camera?
-						</Button>
-					</div>
-				)}
+				{!isCameraOpen &&
+					!hasTakenPhotos &&
+					photoList.length === 0 &&
+					!retakePictures && (
+						<div className="container">
+							<Button onClick={handleCameraPermission}>
+								Allow permission to access camera?
+							</Button>
+						</div>
+					)}
 				{countdown && isCountingDown && (
 					<CountDownButton>{countdown}</CountDownButton>
 				)}
@@ -151,6 +159,9 @@ const Camera = () => {
 					</CameraContainer>
 					<ButtonContainer>
 						{isCameraOpen && <Buttons onClick={takePhoto}>start</Buttons>}
+						{isCameraOpen && retakePictures && photoList.length >= 3 && (
+							<Buttons onClick={handleRetake}>retake</Buttons>
+						)}
 						{photoList.length >= 3 && (
 							<Buttons onClick={handleNextStep}>next</Buttons>
 						)}
@@ -178,14 +189,14 @@ const MainContainer = styled.div`
 `;
 
 const Button = styled.button`
-	background-color: #ecece1;
-	color: #1b1c19;
-	border: solid #1b1c19 1px;
+	background-color: #e987aa;
+	color: #ecece1;
+	border: solid #ecece1 5px;
 	padding: 10px;
 	width: 100%;
 	align-content: center;
 	height: 55px;
-	font-size: 20px;
+	font-size: 25px;
 	cursor: pointer;
 	font-family: "ppneuebit-bold";
 	transition: all 0.6s ease;
@@ -243,7 +254,8 @@ const CountDownButton = styled.button`
 	color: #ecece1;
 	padding: 10px;
 	border: none;
-	font-size: 20px;
+	font-size: 40px;
+	font-family: "ppneuebit-bold";
 `;
 
 const CapturedImagesContainer = styled.div`
@@ -288,10 +300,10 @@ const ButtonContainer = styled.div`
 `;
 
 const Buttons = styled.button`
-	background-color: #ecece1;
-	color: #1b1c19;
-	border: solid #1b1c19 1px;
-	font-size: 20px;
+	background-color: #e987aa;
+	color: #ecece1;
+	border: solid #ecece1 5px;
+	font-size: 25px;
 	padding: 10px 20px;
 	margin: 10px 5px;
 	font-family: "ppneuebit-bold";
