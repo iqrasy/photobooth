@@ -11,6 +11,7 @@ import { theme } from "./Theme";
 import { useNavigate } from "react-router";
 import arrow from "./assets/right-arrow.png";
 import Tooltip from "@mui/material/Tooltip";
+import Stars from "./Stars";
 
 gsap.registerPlugin(ScrambleTextPlugin);
 const mm = gsap.matchMedia();
@@ -18,11 +19,13 @@ const mm = gsap.matchMedia();
 const Templates = () => {
 	const [showColourPicker, setShowColourPicker] = useState(true);
 	const [download, setDownload] = useState(false);
+	const [isDownloading, setIsDownloading] = useState(false);
 	const {
 		colour,
 		setColour,
 		setText,
 		setPhotoList,
+		retakePictures,
 		setRetakePictures,
 		setHasTakenPhotos,
 	} = useContext(PhotoboothContext);
@@ -99,20 +102,24 @@ const Templates = () => {
 
 	const handleDownload = async () => {
 		if (!templateRef.current) return;
+		setIsDownloading(true);
 
 		const canvas = await html2canvas(templateRef.current, {
 			useCORS: true,
 			scale: 3,
 		});
+		setTimeout(() => {
+			const imgData = canvas.toDataURL("image/png");
 
-		const imgData = canvas.toDataURL("image/png");
+			const link = document.createElement("a");
+			link.href = imgData;
+			link.download = "photobooth-printout.png";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
 
-		const link = document.createElement("a");
-		link.href = imgData;
-		link.download = "photobooth-printout.png";
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
+			setRetakePictures(true);
+		}, 3000);
 	};
 
 	const debouncedSetColour = useDebouncedCallback((color) => {
@@ -146,77 +153,105 @@ const Templates = () => {
 					<ArrowImage src={arrow} onClick={handleNavigate} />
 				</Tooltip>
 			)}
-			<Header id="scramble-text-original">
-				<p id="text-scramble__text" aria-hidden="true">
-					<span
-						id="scramble-text-2"
-						style={{ display: showColourPicker ? "inline" : "none" }}
-					></span>
-					<span
-						id="scramble-text-1"
-						style={{ display: !showColourPicker ? "inline" : "none" }}
-					></span>
-				</p>
-			</Header>
-
-			<MainContainer>
-				<ColourPickerContainer ref={colourPickerRef}>
-					{showColourPicker && (
+			{isDownloading ? (
+				<>
+					<Stars />
+					{retakePictures ? (
 						<>
-							<section className="custom-layout example">
-								<HexColorPicker
-									color={colour}
-									onChange={debouncedSetColour}
-									placeholder="Type a color"
-								/>
-							</section>
-							<HexColorInput
-								id={colour}
-								name={colour}
-								color={colour}
-								onChange={debouncedSetColour}
-								prefixed
-								className="input"
-							/>
+							<DownloadContainer>
+								<DownloadContainerHeader>
+									your pictures are ready
+								</DownloadContainerHeader>
+								<ButtonContainer>
+									<Buttons onClick={handleNavigate}>take more pictures</Buttons>
+								</ButtonContainer>
+							</DownloadContainer>
 						</>
+					) : (
+						<DownloadContainer>
+							<DownloadContainerHeader>
+								constructing your pictures...
+							</DownloadContainerHeader>
+						</DownloadContainer>
 					)}
-				</ColourPickerContainer>
-				<TemplateContainer
-					colourpicked={colour}
-					ref={templateRef}
-					saved={showColourPicker === false}
-				>
-					<div className="container">
-						{images.map((img, idx) => (
-							<ImageContainer key={idx}>
-								<img
-									src={img}
-									alt={`Captured ${idx + 1}`}
-									style={{ width: "100%", height: "100%" }}
-								/>
-							</ImageContainer>
-						))}
+				</>
+			) : (
+				<>
+					<Header id="scramble-text-original">
+						<p id="text-scramble__text" aria-hidden="true">
+							<span
+								id="scramble-text-2"
+								style={{ display: showColourPicker ? "inline" : "none" }}
+							></span>
+							<span
+								id="scramble-text-1"
+								style={{ display: !showColourPicker ? "inline" : "none" }}
+							></span>
+						</p>
+					</Header>
 
-						<div>
-							<Input
-								placeholder="add text here"
-								onChange={handleChange}
-								readOnly={showColourPicker === false && "readonly"}
-							/>
-						</div>
-					</div>
-				</TemplateContainer>
-			</MainContainer>
-			<ButtonContainer>
-				{download ? (
-					<>
-						<Buttons onClick={handleDownload}>download your picture</Buttons>
-						<Buttons onClick={handleNavigate}>start over</Buttons>
-					</>
-				) : (
-					<Buttons onClick={handleSave}>save & continue</Buttons>
-				)}
-			</ButtonContainer>
+					<MainContainer>
+						<ColourPickerContainer ref={colourPickerRef}>
+							{showColourPicker && (
+								<>
+									<section className="custom-layout example">
+										<HexColorPicker
+											color={colour}
+											onChange={debouncedSetColour}
+											placeholder="Type a color"
+										/>
+									</section>
+									<HexColorInput
+										id={colour}
+										name={colour}
+										color={colour}
+										onChange={debouncedSetColour}
+										prefixed
+										className="input"
+									/>
+								</>
+							)}
+						</ColourPickerContainer>
+						<TemplateContainer
+							colourpicked={colour}
+							ref={templateRef}
+							saved={showColourPicker === false}
+						>
+							<div className="container">
+								{images.map((img, idx) => (
+									<ImageContainer key={idx}>
+										<img
+											src={img}
+											alt={`Captured ${idx + 1}`}
+											style={{ width: "100%", height: "100%" }}
+										/>
+									</ImageContainer>
+								))}
+
+								<div>
+									<Input
+										placeholder="add text here"
+										onChange={handleChange}
+										readOnly={showColourPicker === false && "readonly"}
+									/>
+								</div>
+							</div>
+						</TemplateContainer>
+					</MainContainer>
+					<ButtonContainer>
+						{download ? (
+							<>
+								<Buttons onClick={handleDownload}>
+									download your picture
+								</Buttons>
+								<Buttons onClick={handleNavigate}>start over</Buttons>
+							</>
+						) : (
+							<Buttons onClick={handleSave}>save & continue</Buttons>
+						)}
+					</ButtonContainer>
+				</>
+			)}
 		</>
 	);
 };
@@ -344,7 +379,7 @@ const ButtonContainer = styled.div`
 	justify-content: center;
 	align-items: end;
 	margin: 20px;
-	height: 300px;
+	/* height: 300px; */
 	gap: 20px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
@@ -360,5 +395,25 @@ const ArrowImage = styled.img`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		height: 30px;
+	}
+`;
+
+const DownloadContainer = styled.div`
+	width: 100vw;
+	height: 100vh;
+	background-color: #450920;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-family: "ppneuebit-bold";
+`;
+
+const DownloadContainerHeader = styled.p`
+	color: #e987aa;
+	font-size: 50px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		font-size: 30px;
 	}
 `;
