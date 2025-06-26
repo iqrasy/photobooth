@@ -8,7 +8,7 @@ const Stars = () => {
 			bottom: Math.floor(Math.random() * 90) + "%",
 			left: Math.floor(Math.random() * 90) + "%",
 			right: Math.floor(Math.random() * 90) + "%",
-			width: Math.floor(Math.random() * 40) + 30,
+			width: Math.floor(Math.random() * 10) + 10,
 		}));
 	}, []);
 
@@ -43,7 +43,6 @@ const Stars = () => {
 						right: style.right,
 						opacity: 0.8,
 						pointerEvents: "none",
-						padding: "20px",
 					}}
 				/>
 			))}

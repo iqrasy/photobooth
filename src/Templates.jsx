@@ -7,25 +7,26 @@ import html2canvas from "html2canvas";
 import { useDebouncedCallback } from "use-debounce";
 import { gsap } from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+import { SplitText } from "gsap/all";
 import { theme } from "./Theme";
 import { useNavigate } from "react-router";
 import arrow from "./assets/right-arrow.png";
 import Tooltip from "@mui/material/Tooltip";
 import Stars from "./Stars";
 
-gsap.registerPlugin(ScrambleTextPlugin);
+gsap.registerPlugin(ScrambleTextPlugin, SplitText);
 const mm = gsap.matchMedia();
 
 const Templates = () => {
 	const [showColourPicker, setShowColourPicker] = useState(true);
 	const [download, setDownload] = useState(false);
 	const [isDownloading, setIsDownloading] = useState(false);
+	const [downloadComplete, setDownloadComplete] = useState(false);
 	const {
 		colour,
 		setColour,
 		setText,
 		setPhotoList,
-		retakePictures,
 		setRetakePictures,
 		setHasTakenPhotos,
 	} = useContext(PhotoboothContext);
@@ -59,6 +60,36 @@ const Templates = () => {
 			});
 		}
 	}, [showColourPicker]);
+
+	useEffect(() => {
+		if (isDownloading && !downloadComplete) {
+			const childSplit = new SplitText("h1", {
+				type: "lines",
+				mask: "lines",
+				linesClass: "split-child",
+			});
+
+			gsap.from(childSplit.lines, {
+				duration: 2,
+				yPercent: 100,
+				ease: "power4",
+				stagger: 0.1,
+			});
+			const dots = gsap.utils.toArray(".dot");
+			gsap.set(dots, { opacity: 0 });
+
+			gsap.to(dots, {
+				opacity: 1,
+				stagger: {
+					each: 0.3,
+					repeat: -1,
+					yoyo: true,
+				},
+				ease: "power1.inOut",
+				duration: 0.5,
+			});
+		}
+	}, [isDownloading, downloadComplete]);
 
 	const handleSave = () => {
 		mm.add(
@@ -119,6 +150,7 @@ const Templates = () => {
 			document.body.removeChild(link);
 
 			setRetakePictures(true);
+			setDownloadComplete(true);
 		}, 3000);
 	};
 
@@ -156,24 +188,31 @@ const Templates = () => {
 			{isDownloading ? (
 				<>
 					<Stars />
-					{retakePictures ? (
-						<>
-							<DownloadContainer>
-								<DownloadContainerHeader>
+					<DownloadContainer>
+						<DownloadContainerHeader>
+							{downloadComplete ? (
+								<DownloadContainerHeader className="loading-text">
 									your pictures are ready
 								</DownloadContainerHeader>
-								<ButtonContainer>
-									<Buttons onClick={handleNavigate}>take more pictures</Buttons>
-								</ButtonContainer>
-							</DownloadContainer>
-						</>
-					) : (
-						<DownloadContainer>
-							<DownloadContainerHeader>
-								constructing your pictures...
-							</DownloadContainerHeader>
-						</DownloadContainer>
-					)}
+							) : (
+								<>
+									<DownloadContainerHeader className="loading-text">
+										constructing your pictures
+									</DownloadContainerHeader>
+									<SpanContainer className="dots">
+										<Span className="dot">.</Span>
+										<Span className="dot">.</Span>
+										<Span className="dot">.</Span>
+									</SpanContainer>
+								</>
+							)}
+						</DownloadContainerHeader>
+						{downloadComplete && (
+							<ButtonContainer>
+								<Buttons onClick={handleNavigate}>take more pictures</Buttons>
+							</ButtonContainer>
+						)}
+					</DownloadContainer>
 				</>
 			) : (
 				<>
@@ -356,21 +395,24 @@ const Input = styled.input`
 `;
 
 const Buttons = styled.button`
-	background-color: #ecece1;
-	color: #1b1c19;
-	border: solid #1b1c19 1px;
-	font-size: 20px;
-	padding: 10px;
-	margin: 10px 0;
+	background-color: #e987aa;
+	color: #ecece1;
+	border: solid #ecece1 5px;
+	font-size: 25px;
+	padding: 10px 20px;
+	margin: 10px 5px;
 	font-family: "ppneuebit-bold";
 	cursor: pointer;
 	transition: all 0.6s ease;
-	width: 190px;
 
 	&:hover {
 		border-radius: 10px;
 		background-color: #e987aa;
 		transition: all 0.3s ease-in-out;
+	}
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		font-size: 19px;
 	}
 `;
 
@@ -379,7 +421,7 @@ const ButtonContainer = styled.div`
 	justify-content: center;
 	align-items: end;
 	margin: 20px;
-	/* height: 300px; */
+	height: 300px;
 	gap: 20px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
@@ -399,9 +441,11 @@ const ArrowImage = styled.img`
 `;
 
 const DownloadContainer = styled.div`
-	width: 100vw;
+	width: 100%;
 	height: 100vh;
-	background-color: #450920;
+	margin: 0;
+	padding: 0;
+	background-color: #1b1c19;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -411,9 +455,29 @@ const DownloadContainer = styled.div`
 
 const DownloadContainerHeader = styled.p`
 	color: #e987aa;
+	font-family: "PPMondwest-regular";
 	font-size: 50px;
+	text-shadow: 0 0 5px #e987aa;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		font-size: 30px;
+		font-size: 40px;
+	}
+`;
+
+const SpanContainer = styled.span`
+	margin-left: 8px;
+`;
+
+const Span = styled.span`
+	color: #e987aa;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	width: 25px;
+	font-size: 100px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		font-size: 50px;
 	}
 `;
