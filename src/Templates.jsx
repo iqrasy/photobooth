@@ -372,7 +372,7 @@ const ImageContainer = styled.div`
 	@media (max-width: ${theme.breakpoints.sm}) {
 		margin: 6px auto;
 		width: 200px;
-		height: 230px;
+		height: 240px;
 	}
 `;
 
