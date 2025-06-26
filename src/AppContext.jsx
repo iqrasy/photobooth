@@ -9,6 +9,8 @@ const PhotoContext = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [retakePictures, setRetakePictures] = useState(false);
 	const [hasTakenPhotos, setHasTakenPhotos] = useState(false);
+	const [downloadComplete, setDownloadComplete] = useState(false);
+	const [showColourPicker, setShowColourPicker] = useState(true);
 
 	const value = {
 		colour,
@@ -23,6 +25,10 @@ const PhotoContext = ({ children }) => {
 		setRetakePictures,
 		hasTakenPhotos,
 		setHasTakenPhotos,
+		downloadComplete,
+		setDownloadComplete,
+		showColourPicker,
+		setShowColourPicker,
 	};
 
 	return (

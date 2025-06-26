@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import { HexColorInput, HexColorPicker } from "react-colorful";
 import { useState, useContext, useRef, useEffect } from "react";
 import "./styles.css";
 import { PhotoboothContext } from "./AppContext";
 import html2canvas from "html2canvas";
-import { useDebouncedCallback } from "use-debounce";
 import { gsap } from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { SplitText } from "gsap/all";
@@ -12,23 +10,25 @@ import { theme } from "./Theme";
 import { useNavigate } from "react-router";
 import arrow from "./assets/right-arrow.png";
 import Tooltip from "@mui/material/Tooltip";
-import Stars from "./Stars";
+import DownloadPage from "./DownloadPage";
+import ColourPicker from "./ColourPicker";
 
 gsap.registerPlugin(ScrambleTextPlugin, SplitText);
 const mm = gsap.matchMedia();
 
 const Templates = () => {
-	const [showColourPicker, setShowColourPicker] = useState(true);
 	const [download, setDownload] = useState(false);
 	const [isDownloading, setIsDownloading] = useState(false);
-	const [downloadComplete, setDownloadComplete] = useState(false);
 	const {
 		colour,
-		setColour,
 		setText,
 		setPhotoList,
 		setRetakePictures,
 		setHasTakenPhotos,
+		downloadComplete,
+		setDownloadComplete,
+		showColourPicker,
+		setShowColourPicker,
 	} = useContext(PhotoboothContext);
 	const images = JSON.parse(localStorage.getItem("photo-series") || "[]");
 	const templateRef = useRef();
@@ -154,10 +154,6 @@ const Templates = () => {
 		}, 3000);
 	};
 
-	const debouncedSetColour = useDebouncedCallback((color) => {
-		setColour(color);
-	}, 50);
-
 	const handleNavigate = () => {
 		localStorage.removeItem("photo-series");
 		setPhotoList([]);
@@ -186,34 +182,7 @@ const Templates = () => {
 				</Tooltip>
 			)}
 			{isDownloading ? (
-				<>
-					<Stars />
-					<DownloadContainer>
-						<DownloadContainerHeader>
-							{downloadComplete ? (
-								<DownloadContainerHeader className="loading-text">
-									your pictures are ready
-								</DownloadContainerHeader>
-							) : (
-								<>
-									<DownloadContainerHeader className="loading-text">
-										constructing your pictures
-									</DownloadContainerHeader>
-									<SpanContainer className="dots">
-										<Span className="dot">.</Span>
-										<Span className="dot">.</Span>
-										<Span className="dot">.</Span>
-									</SpanContainer>
-								</>
-							)}
-						</DownloadContainerHeader>
-						{downloadComplete && (
-							<ButtonContainer>
-								<Buttons onClick={handleNavigate}>take more pictures</Buttons>
-							</ButtonContainer>
-						)}
-					</DownloadContainer>
-				</>
+				<DownloadPage handleNavigate={handleNavigate} />
 			) : (
 				<>
 					<Header id="scramble-text-original">
@@ -230,27 +199,7 @@ const Templates = () => {
 					</Header>
 
 					<MainContainer>
-						<ColourPickerContainer ref={colourPickerRef}>
-							{showColourPicker && (
-								<>
-									<section className="custom-layout example">
-										<HexColorPicker
-											color={colour}
-											onChange={debouncedSetColour}
-											placeholder="Type a color"
-										/>
-									</section>
-									<HexColorInput
-										id={colour}
-										name={colour}
-										color={colour}
-										onChange={debouncedSetColour}
-										prefixed
-										className="input"
-									/>
-								</>
-							)}
-						</ColourPickerContainer>
+						<ColourPicker />
 						<TemplateContainer
 							colourpicked={colour}
 							ref={templateRef}
@@ -323,17 +272,6 @@ const Header = styled.h1`
 	}
 `;
 
-const ColourPickerContainer = styled.div`
-	padding: 10px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-
-	.input {
-		cursor: text;
-	}
-`;
 
 const TemplateContainer = styled.div`
 	width: 300px;
@@ -440,45 +378,3 @@ const ArrowImage = styled.img`
 	}
 `;
 
-const DownloadContainer = styled.div`
-	width: 100%;
-	height: 100vh;
-	margin: 0;
-	padding: 0;
-	background-color: #1b1c19;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: "ppneuebit-bold";
-`;
-
-const DownloadContainerHeader = styled.p`
-	color: #e987aa;
-	font-family: "PPMondwest-regular";
-	font-size: 50px;
-	text-shadow: 0 0 5px #e987aa;
-	text-align: center;
-
-	@media (max-width: ${theme.breakpoints.sm}) {
-		font-size: 40px;
-	}
-`;
-
-const SpanContainer = styled.span`
-	margin-left: 8px;
-`;
-
-const Span = styled.span`
-	color: #e987aa;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 auto;
-	width: 25px;
-	font-size: 100px;
-
-	@media (max-width: ${theme.breakpoints.sm}) {
-		font-size: 50px;
-	}
-`;
