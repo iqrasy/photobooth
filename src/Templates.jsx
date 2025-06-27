@@ -223,11 +223,7 @@ const Templates = () => {
 						>
 							{images.map((img, idx) => (
 								<React.Fragment key={idx}>
-									<Image
-										src={img}
-										alt={`Captured ${idx + 1}`}
-										style={{ width: "100%", height: "100%" }}
-									/>
+									<Image src={img} alt={`Captured ${idx + 1}`} />
 								</React.Fragment>
 							))}
 
@@ -307,11 +303,16 @@ const TemplateContainer = styled.div`
 		flex-direction: column;
 		align-items: center;
 	}
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		width: 230px;
+		height: 680px;
+	}
 `;
 
-const Image = styled(LazyLoadImage)`
-	width: 70px;
-	height: 80px;
+const Image = styled.img`
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
 	margin-top: 8px;
 `;
