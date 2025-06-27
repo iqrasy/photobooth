@@ -12,7 +12,6 @@ import Tooltip from "@mui/material/Tooltip";
 import DownloadPage from "./DownloadPage";
 import ColourPicker from "./ColourPicker";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { saveAs } from "file-saver";
 
 gsap.registerPlugin(ScrambleTextPlugin, SplitText);
 const mm = gsap.matchMedia();
@@ -132,36 +131,6 @@ const Templates = () => {
 		setText(e.target.value);
 	};
 
-	// const handleDownload = async () => {
-	// 	if (!templateRef.current) return;
-	// 	setIsDownloading(true);
-	// 	try {
-	// 		const canvas = await html2canvas(templateRef.current, {
-	// 			useCORS: true,
-	// 			scale: 3,
-	// 		});
-	// 		const imgData = canvas.toDataURL("image/png");
-
-	// 		const link = document.createElement("a");
-	// 		link.href = imgData;
-	// 		link.download = "photobooth-printout.png";
-	// 		link.target = "_blank";
-	// 		link.rel = "noreferrer";
-
-	// 		document.body.appendChild(link);
-	// 		link.click();
-	// 		document.body.removeChild(link);
-
-	// 		setTimeout(() => {
-	// 			setRetakePictures(true);
-	// 			setDownloadComplete(true);
-	// 		}, 3000);
-	// 	} catch (error) {
-	// 		console.log("Download failed:", error);
-	// 		setIsDownloading(false);
-	// 	}
-	// };
-
 	const handleDownload = async () => {
 		if (!templateRef.current) return;
 		setIsDownloading(true);
@@ -180,15 +149,12 @@ const Templates = () => {
 					const a = document.createElement("a");
 					a.href = url;
 					a.download = "photobooth-printout.png";
-
-					// Use _self instead of _blank for mobile compatibility
 					a.target = "_self";
 
 					document.body.appendChild(a);
 					a.click();
 					document.body.removeChild(a);
 
-					// Revoke object URL to free memory
 					URL.revokeObjectURL(url);
 
 					setRetakePictures(true);
@@ -323,8 +289,8 @@ const Header = styled.h1`
 const TemplateContainer = styled.div`
 	width: 90vw;
 	max-width: 320px;
-	height: auto;
-	max-height: 90vh;
+	height: 50vh;
+	/* max-height: 90vh; */
 	margin: 10px auto;
 	padding: 5px 10px;
 	border-radius: 3px;
