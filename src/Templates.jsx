@@ -289,8 +289,8 @@ const Header = styled.h1`
 const TemplateContainer = styled.div`
 	width: 90vw;
 	max-width: 320px;
-	height: 50vh;
-	/* max-height: 90vh; */
+	height: auto;
+	max-height: 90vh;
 	margin: 10px auto;
 	padding: 5px 10px;
 	border-radius: 3px;
@@ -311,7 +311,7 @@ const TemplateContainer = styled.div`
 
 const Image = styled(LazyLoadImage)`
 	width: 100%;
-	height: 100%;
+	max-height: 200px;
 	object-fit: cover;
 	margin-top: 8px;
 `;
