@@ -7,12 +7,12 @@ import { gsap } from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { SplitText } from "gsap/all";
 import { theme } from "./Theme";
-// import { useNavigate } from "react-router";
 import arrow from "./assets/right-arrow.png";
 import Tooltip from "@mui/material/Tooltip";
 import DownloadPage from "./DownloadPage";
 import ColourPicker from "./ColourPicker";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { saveAs } from "file-saver";
 
 gsap.registerPlugin(ScrambleTextPlugin, SplitText);
 const mm = gsap.matchMedia();
@@ -35,7 +35,6 @@ const Templates = () => {
 	const images = JSON.parse(localStorage.getItem("photo-series") || "[]");
 	const templateRef = useRef();
 	const colourPickerRef = useRef(null);
-	// const navigate = useNavigate();
 
 	useEffect(() => {
 		if (showColourPicker) {
@@ -133,35 +132,76 @@ const Templates = () => {
 		setText(e.target.value);
 	};
 
-	const handleDownload = async () => {
-		if (!templateRef.current) return;
-		setIsDownloading(true);
-		try {
-			const canvas = await html2canvas(templateRef.current, {
-				useCORS: true,
-				scale: 3,
-			});
-			const imgData = canvas.toDataURL("image/png");
+	// const handleDownload = async () => {
+	// 	if (!templateRef.current) return;
+	// 	setIsDownloading(true);
+	// 	try {
+	// 		const canvas = await html2canvas(templateRef.current, {
+	// 			useCORS: true,
+	// 			scale: 3,
+	// 		});
+	// 		const imgData = canvas.toDataURL("image/png");
 
-			const link = document.createElement("a");
-			link.href = imgData;
-			link.download = "photobooth-printout.png";
-			link.target = "_blank";
-			link.rel = "noreferrer";
+	// 		const link = document.createElement("a");
+	// 		link.href = imgData;
+	// 		link.download = "photobooth-printout.png";
+	// 		link.target = "_blank";
+	// 		link.rel = "noreferrer";
 
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
+	// 		document.body.appendChild(link);
+	// 		link.click();
+	// 		document.body.removeChild(link);
+
+	// 		setTimeout(() => {
+	// 			setRetakePictures(true);
+	// 			setDownloadComplete(true);
+	// 		}, 3000);
+	// 	} catch (error) {
+	// 		console.log("Download failed:", error);
+	// 		setIsDownloading(false);
+	// 	}
+	// };
+
+const handleDownload = async () => {
+	if (!templateRef.current) return;
+	setIsDownloading(true);
+
+	try {
+		const canvas = await html2canvas(templateRef.current, {
+			useCORS: true,
+			scale: 3,
+		});
+
+		canvas.toBlob((blob) => {
+			if (!blob) return;
+
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = "photobooth-printout.png";
+
+			// Use _self instead of _blank for mobile compatibility
+			a.target = "_self";
+
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+
+			// Revoke object URL to free memory
+			URL.revokeObjectURL(url);
 
 			setTimeout(() => {
 				setRetakePictures(true);
 				setDownloadComplete(true);
 			}, 3000);
-		} catch (error) {
-			console.log("Download failed:", error);
-			setIsDownloading(false);
-		}
-	};
+		}, "image/png");
+	} catch (error) {
+		console.error("Download failed:", error);
+		setIsDownloading(false);
+	}
+};
+
 
 	const handleNavigate = () => {
 		localStorage.removeItem("photo-series");
@@ -170,7 +210,6 @@ const Templates = () => {
 		setText("");
 		setHasTakenPhotos(false);
 		setRetakePictures(true);
-		// navigate("/camera");
 		window.location.href = "/camera";
 	};
 
@@ -285,7 +324,7 @@ const Header = styled.h1`
 `;
 
 const TemplateContainer = styled.div`
-	width: 300px;
+	/* width: 300px;
 	height: 750px;
 	margin: 10px 0;
 	padding: 5px 10px;
@@ -304,13 +343,31 @@ const TemplateContainer = styled.div`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		margin: 6px;
-		width: auto;
-		height: auto;
+		width: 200px;
+		height: 500px;
+	} */
+	width: 90vw;
+	max-width: 320px;
+	height: auto;
+	max-height: 80vh;
+	margin: 10px auto;
+	padding: 10px;
+	background-color: ${(props) => props.colourpicked};
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow-y: auto;
+
+	.container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 `;
 
 const ImageContainer = styled.div`
-	background-color: #d6d6d6;
+	/* background-color: #d6d6d6;
 	height: 200px;
 	margin: 5px 0px;
 	border-radius: 3px;
@@ -322,6 +379,22 @@ const ImageContainer = styled.div`
 		margin: 6px auto;
 		width: auto;
 		height: auto;
+	} */
+	width: 100%;
+	aspect-ratio: 6 / 4; // Or whatever fits your layout
+	background-color: #d6d6d6;
+	margin: 8px 0;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 6px;
 	}
 `;
 
