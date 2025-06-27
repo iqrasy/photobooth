@@ -135,24 +135,30 @@ const Templates = () => {
 	const handleDownload = async () => {
 		if (!templateRef.current) return;
 		setIsDownloading(true);
-
-		const canvas = await html2canvas(templateRef.current, {
-			useCORS: true,
-			scale: 3,
-		});
-		setTimeout(() => {
+		try {
+			const canvas = await html2canvas(templateRef.current, {
+				useCORS: true,
+				scale: 3,
+			});
 			const imgData = canvas.toDataURL("image/png");
 
 			const link = document.createElement("a");
 			link.href = imgData;
 			link.download = "photobooth-printout.png";
+			link.target = "_blank";
+
 			document.body.appendChild(link);
 			link.click();
 			document.body.removeChild(link);
 
-			setRetakePictures(true);
-			setDownloadComplete(true);
-		}, 3000);
+			setTimeout(() => {
+				setRetakePictures(true);
+				setDownloadComplete(true);
+			}, 3000);
+		} catch (error) {
+			console.log("Download failed:", error);
+			setIsDownloading(false);
+		}
 	};
 
 	const handleNavigate = () => {
