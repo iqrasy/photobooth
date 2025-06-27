@@ -310,8 +310,8 @@ const TemplateContainer = styled.div`
 `;
 
 const Image = styled(LazyLoadImage)`
-	width: 150px;
-	height: 170px;
+	width: 70px;
+	height: 80px;
 	object-fit: cover;
 	margin-top: 8px;
 `;
