@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import "./styles.css";
 import { PhotoboothContext } from "./AppContext";
 import html2canvas from "html2canvas";
@@ -253,25 +253,24 @@ const Templates = () => {
 							colourpicked={colour}
 							ref={templateRef}
 							saved={showColourPicker === false}
+							className="container"
 						>
-							<div className="container">
-								{images.map((img, idx) => (
-									<ImageContainer key={idx}>
-										<LazyLoadImage
-											src={img}
-											alt={`Captured ${idx + 1}`}
-											style={{ width: "100%", height: "100%" }}
-										/>
-									</ImageContainer>
-								))}
-
-								<div>
-									<Input
-										placeholder="add text here"
-										onChange={handleChange}
-										readOnly={showColourPicker === false && "readonly"}
+							{images.map((img, idx) => (
+								<React.Fragment key={idx}>
+									<Image
+										src={img}
+										alt={`Captured ${idx + 1}`}
+										style={{ width: "100%", height: "100%" }}
 									/>
-								</div>
+								</React.Fragment>
+							))}
+
+							<div>
+								<Input
+									placeholder="add text here"
+									onChange={handleChange}
+									readOnly={showColourPicker === false && "readonly"}
+								/>
 							</div>
 						</TemplateContainer>
 					</MainContainer>
@@ -322,38 +321,16 @@ const Header = styled.h1`
 `;
 
 const TemplateContainer = styled.div`
-	/* width: 300px;
-	height: 750px;
-	margin: 10px 0;
-	padding: 5px 10px;
-	background-color: ${(props) => props.colourpicked};
-	border-radius: 3px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	.container {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		margin-top: 5px;
-	}
-
-	@media (max-width: ${theme.breakpoints.sm}) {
-		margin: 6px;
-		width: 210px;
-		height: 490px;
-	} */
-
 	width: 90vw;
 	max-width: 320px;
 	height: auto;
 	max-height: 90vh;
 	margin: 10px auto;
-	padding: 10px;
+	padding: 5px 10px;
+	border-radius: 3px;
 	background-color: ${(props) => props.colourpicked};
-	border-radius: 8px;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	overflow-y: auto;
@@ -366,36 +343,11 @@ const TemplateContainer = styled.div`
 	}
 `;
 
-const ImageContainer = styled.div`
-	/* background-color: #d6d6d6;
-	height: 200px;
-	margin: 5px 0px;
-	border-radius: 3px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	@media (max-width: ${theme.breakpoints.sm}) {
-		margin: 6px auto;
-		width: auto;
-		height: auto;
-	} */
+const Image = styled(LazyLoadImage)`
 	width: 100%;
-	height: auto;
-	background-color: #d6d6d6;
-	margin: 8px 0;
-	border-radius: 6px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-
-	img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		border-radius: 6px;
-	}
+	height: 100%;
+	object-fit: cover;
+	margin-top: 8px;
 `;
 
 const Input = styled.input`
