@@ -324,7 +324,7 @@ const Header = styled.h1`
 `;
 
 const TemplateContainer = styled.div`
-	/* width: 300px;
+	width: 300px;
 	height: 750px;
 	margin: 10px 0;
 	padding: 5px 10px;
@@ -343,27 +343,10 @@ const TemplateContainer = styled.div`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		margin: 6px;
-		width: 200px;
-		height: 500px;
-	} */
-	width: 90vw;
-	max-width: 320px;
-	height: auto;
-	max-height: 50vh;
-	margin: 10px auto;
-	padding: 10px;
-	background-color: ${(props) => props.colourpicked};
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	overflow-y: auto;
-
-	.container {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+		width: 210px;
+		height: 490px;
 	}
+
 `;
 
 const ImageContainer = styled.div`
