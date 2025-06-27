@@ -315,6 +315,10 @@ const Image = styled.img`
 	height: 100%;
 	object-fit: cover;
 	margin-top: 8px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		height: 70%;
+	}
 `;
 
 const Input = styled.input`
