@@ -306,7 +306,7 @@ const TemplateContainer = styled.div`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		width: 230px;
-		height: 680px;
+		height: 730px;
 	}
 `;
 
