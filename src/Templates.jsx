@@ -7,7 +7,7 @@ import { gsap } from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { SplitText } from "gsap/all";
 import { theme } from "./Theme";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import arrow from "./assets/right-arrow.png";
 import Tooltip from "@mui/material/Tooltip";
 import DownloadPage from "./DownloadPage";
@@ -35,7 +35,7 @@ const Templates = () => {
 	const images = JSON.parse(localStorage.getItem("photo-series") || "[]");
 	const templateRef = useRef();
 	const colourPickerRef = useRef(null);
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	useEffect(() => {
 		if (showColourPicker) {
@@ -170,10 +170,9 @@ const Templates = () => {
 		setText("");
 		setHasTakenPhotos(false);
 		setRetakePictures(true);
-		navigate("/camera");
+		// navigate("/camera");
+		window.location.href = "/camera";
 	};
-
-	console.log(downloadComplete);
 
 	return (
 		<>

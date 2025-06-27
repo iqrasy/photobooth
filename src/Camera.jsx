@@ -102,6 +102,7 @@ const Camera = () => {
 		setPhotoList([]);
 		setHasTakenPhotos(false);
 		setRetakePictures(true);
+		window.location.reload();
 	};
 
 	return (
