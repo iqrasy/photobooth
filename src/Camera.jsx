@@ -7,6 +7,7 @@ import Tooltip from "@mui/material/Tooltip";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { theme } from "./Theme";
+import ImagesContainer from "./ImagesContainer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,7 +30,7 @@ const Camera = () => {
 		try {
 			const mediaStream = await navigator.mediaDevices.getUserMedia({
 				video: {
-					facingMode: "user",
+					facingMode: { ideal: "user" },
 				},
 				audio: false,
 			});
@@ -143,19 +144,7 @@ const Camera = () => {
 							id="camera"
 							iscameraopen={CSSMathValue.toString(isCameraOpen)}
 						/>
-						{photoList.length > 0 && (
-							<>
-								<CapturedImagesContainer>
-									{photoList.map((photo, index) => (
-										<CapturedImages
-											key={index}
-											src={photo}
-											alt={`Captured ${index + 1}`}
-										/>
-									))}
-								</CapturedImagesContainer>
-							</>
-						)}
+						{photoList.length > 0 && <ImagesContainer />}
 					</CameraContainer>
 					<ButtonContainer>
 						{isCameraOpen && <Buttons onClick={takePhoto}>start</Buttons>}
@@ -256,41 +245,6 @@ const CountDownButton = styled.button`
 	border: none;
 	font-size: 40px;
 	font-family: "ppneuebit-bold";
-`;
-
-const CapturedImagesContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	height: auto;
-	pointer-events: none;
-
-	@media (max-width: ${theme.breakpoints.sm}) {
-		flex-direction: row;
-	}
-`;
-
-const CapturedImages = styled.img`
-	width: 150px;
-	border-radius: 5px;
-	border: solid #1b1c19 1px;
-	margin: 5px 20px;
-	animation: myAnim 0.5s ease 0s 1 normal forwards;
-
-	@keyframes myAnim {
-		0% {
-			transform: scale(0);
-		}
-
-		100% {
-			transform: scale(1);
-		}
-	}
-
-	@media (max-width: ${theme.breakpoints.sm}) {
-		width: 90px;
-		margin: 6px;
-	}
 `;
 
 const ButtonContainer = styled.div`

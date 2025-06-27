@@ -12,6 +12,7 @@ import arrow from "./assets/right-arrow.png";
 import Tooltip from "@mui/material/Tooltip";
 import DownloadPage from "./DownloadPage";
 import ColourPicker from "./ColourPicker";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 gsap.registerPlugin(ScrambleTextPlugin, SplitText);
 const mm = gsap.matchMedia();
@@ -208,7 +209,7 @@ const Templates = () => {
 							<div className="container">
 								{images.map((img, idx) => (
 									<ImageContainer key={idx}>
-										<img
+										<LazyLoadImage
 											src={img}
 											alt={`Captured ${idx + 1}`}
 											style={{ width: "100%", height: "100%" }}
@@ -272,7 +273,6 @@ const Header = styled.h1`
 	}
 `;
 
-
 const TemplateContainer = styled.div`
 	width: 300px;
 	height: 750px;
@@ -309,8 +309,8 @@ const ImageContainer = styled.div`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		margin: 6px auto;
-		width: 200px;
-		height: 240px;
+		width: auto;
+		height: auto;
 	}
 `;
 
@@ -377,4 +377,3 @@ const ArrowImage = styled.img`
 		height: 30px;
 	}
 `;
-

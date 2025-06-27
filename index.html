@@ -2,24 +2,25 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="/camera.png" />
-		<meta name="description" content="photobooth app for your phone" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta
-			http-equiv="Content-Security-Policy"
-			content="upgrade-insecure-requests"
-		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="description" content="Photobooth app for your phone" />
+		<meta name="theme-color" content="#000000" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1, maximum-scale=1"
-		/>
+
+		<!-- PWA Mobile Optimizations -->
 		<meta name="mobile-web-app-capable" content="yes" />
-		<meta
-			name="apple-mobile-web-app-status-bar-style"
-			content="black-translucent"
-		/>
-		<meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+
+		<!-- Security -->
+		<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
+		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+
+		<!-- Icons -->
+		<link rel="icon" type="image/png" href="/camera.png" />
+		<link rel="apple-touch-icon" href="/camera.png" />
+
 		<title>fotoautomatica</title>
 	</head>
 	<body>
