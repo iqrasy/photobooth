@@ -174,6 +174,7 @@ const handleDownload = async () => {
 
 		canvas.toBlob((blob) => {
 			if (!blob) return;
+			setTimeout(() => {
 
 			const url = URL.createObjectURL(blob);
 
@@ -191,7 +192,6 @@ const handleDownload = async () => {
 			// Revoke object URL to free memory
 			URL.revokeObjectURL(url);
 
-			setTimeout(() => {
 				setRetakePictures(true);
 				setDownloadComplete(true);
 			}, 3000);
@@ -349,7 +349,7 @@ const TemplateContainer = styled.div`
 	width: 90vw;
 	max-width: 320px;
 	height: auto;
-	max-height: 80vh;
+	max-height: 50vh;
 	margin: 10px auto;
 	padding: 10px;
 	background-color: ${(props) => props.colourpicked};
