@@ -8,7 +8,7 @@ const DownloadPage = ({ handleNavigate }) => {
 
 	return (
 		<DownloadContainer>
-			<DownloadContainerHeader>
+			<div>
 				{downloadComplete ? (
 					<DownloadContainerHeader className="loading-text">
 						your pictures are ready
@@ -25,7 +25,7 @@ const DownloadPage = ({ handleNavigate }) => {
 						</SpanContainer>
 					</>
 				)}
-			</DownloadContainerHeader>
+			</div>
 			{downloadComplete && (
 				<ButtonContainer>
 					<Buttons onClick={handleNavigate}>take more pictures</Buttons>
@@ -77,5 +77,40 @@ const Span = styled.span`
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		font-size: 50px;
+	}
+`;
+
+const Buttons = styled.button`
+	background-color: #e987aa;
+	color: #ecece1;
+	border: solid #ecece1 5px;
+	font-size: 25px;
+	padding: 10px 20px;
+	margin: 10px 5px;
+	font-family: "ppneuebit-bold";
+	cursor: pointer;
+	transition: all 0.6s ease;
+
+	&:hover {
+		border-radius: 10px;
+		background-color: #e987aa;
+		transition: all 0.3s ease-in-out;
+	}
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		font-size: 19px;
+	}
+`;
+
+const ButtonContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: end;
+	margin: 20px;
+	height: 300px;
+	gap: 20px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		height: 40px;
 	}
 `;
