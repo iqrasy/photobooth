@@ -30,6 +30,7 @@ const Templates = () => {
 		setDownloadComplete,
 		showColourPicker,
 		setShowColourPicker,
+		setColour,
 	} = useContext(PhotoboothContext);
 	const images = JSON.parse(localStorage.getItem("photo-series") || "[]");
 	const templateRef = useRef();
@@ -146,6 +147,7 @@ const Templates = () => {
 			link.href = imgData;
 			link.download = "photobooth-printout.png";
 			link.target = "_blank";
+			link.rel = "noreferrer";
 
 			document.body.appendChild(link);
 			link.click();
@@ -164,10 +166,14 @@ const Templates = () => {
 	const handleNavigate = () => {
 		localStorage.removeItem("photo-series");
 		setPhotoList([]);
+		setColour([]);
+		setText("");
 		setHasTakenPhotos(false);
-		setRetakePictures(false);
+		setRetakePictures(true);
 		navigate("/camera");
 	};
+
+	console.log(downloadComplete);
 
 	return (
 		<>
