@@ -162,46 +162,44 @@ const Templates = () => {
 	// 	}
 	// };
 
-const handleDownload = async () => {
-	if (!templateRef.current) return;
-	setIsDownloading(true);
+	const handleDownload = async () => {
+		if (!templateRef.current) return;
+		setIsDownloading(true);
 
-	try {
-		const canvas = await html2canvas(templateRef.current, {
-			useCORS: true,
-			scale: 3,
-		});
+		try {
+			const canvas = await html2canvas(templateRef.current, {
+				useCORS: true,
+				scale: 3,
+			});
 
-		canvas.toBlob((blob) => {
-			if (!blob) return;
-			setTimeout(() => {
+			canvas.toBlob((blob) => {
+				if (!blob) return;
+				setTimeout(() => {
+					const url = URL.createObjectURL(blob);
 
-			const url = URL.createObjectURL(blob);
+					const a = document.createElement("a");
+					a.href = url;
+					a.download = "photobooth-printout.png";
 
-			const a = document.createElement("a");
-			a.href = url;
-			a.download = "photobooth-printout.png";
+					// Use _self instead of _blank for mobile compatibility
+					a.target = "_self";
 
-			// Use _self instead of _blank for mobile compatibility
-			a.target = "_self";
+					document.body.appendChild(a);
+					a.click();
+					document.body.removeChild(a);
 
-			document.body.appendChild(a);
-			a.click();
-			document.body.removeChild(a);
+					// Revoke object URL to free memory
+					URL.revokeObjectURL(url);
 
-			// Revoke object URL to free memory
-			URL.revokeObjectURL(url);
-
-				setRetakePictures(true);
-				setDownloadComplete(true);
-			}, 3000);
-		}, "image/png");
-	} catch (error) {
-		console.error("Download failed:", error);
-		setIsDownloading(false);
-	}
-};
-
+					setRetakePictures(true);
+					setDownloadComplete(true);
+				}, 3000);
+			}, "image/png");
+		} catch (error) {
+			console.error("Download failed:", error);
+			setIsDownloading(false);
+		}
+	};
 
 	const handleNavigate = () => {
 		localStorage.removeItem("photo-series");
@@ -324,7 +322,7 @@ const Header = styled.h1`
 `;
 
 const TemplateContainer = styled.div`
-	width: 300px;
+	/* width: 300px;
 	height: 750px;
 	margin: 10px 0;
 	padding: 5px 10px;
@@ -345,8 +343,27 @@ const TemplateContainer = styled.div`
 		margin: 6px;
 		width: 210px;
 		height: 490px;
-	}
+	} */
 
+	width: 90vw;
+	max-width: 320px;
+	height: auto;
+	max-height: 90vh;
+	margin: 10px auto;
+	padding: 10px;
+	background-color: ${(props) => props.colourpicked};
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow-y: auto;
+
+	.container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 `;
 
 const ImageContainer = styled.div`
@@ -364,7 +381,7 @@ const ImageContainer = styled.div`
 		height: auto;
 	} */
 	width: 100%;
-	aspect-ratio: 6 / 4; // Or whatever fits your layout
+	height: auto;
 	background-color: #d6d6d6;
 	margin: 8px 0;
 	border-radius: 6px;
