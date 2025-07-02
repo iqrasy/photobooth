@@ -317,7 +317,7 @@ const Image = styled.img`
 	margin-top: 8px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		height: 70%;
+		height: 27%;
 	}
 `;
 
