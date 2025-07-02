@@ -305,8 +305,8 @@ const TemplateContainer = styled.div`
 	}
 
 	@media (max-width: ${theme.breakpoints.sm}) {
-		width: 230px;
-		height: 450px;
+		width: 200px;
+		height: 550px;
 	}
 `;
 
