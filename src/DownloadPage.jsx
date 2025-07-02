@@ -8,6 +8,11 @@ const DownloadPage = ({ handleNavigate }) => {
 
 	return (
 		<DownloadContainer>
+			{downloadComplete && (
+				<ButtonContainer>
+					<Buttons onClick={handleNavigate}>take more pictures</Buttons>
+				</ButtonContainer>
+			)}
 			<div>
 				{downloadComplete ? (
 					<DownloadContainerHeader className="loading-text">
@@ -26,11 +31,6 @@ const DownloadPage = ({ handleNavigate }) => {
 					</>
 				)}
 			</div>
-			{downloadComplete && (
-				<ButtonContainer>
-					<Buttons onClick={handleNavigate}>take more pictures</Buttons>
-				</ButtonContainer>
-			)}
 		</DownloadContainer>
 	);
 };
