@@ -69,7 +69,7 @@ const MainContainer = styled.div`
 
 const InnerContainer = styled.div`
 	gap: 10px;
-	font-family: "PPMondwest-regular";
+	/* font-family: "PPMondwest-regular"; */
 
 	h1 > div {
 		position: relative;
@@ -84,13 +84,12 @@ const InnerContainer = styled.div`
 `;
 
 const Header = styled.h1`
-	font-family: "PPMondwest-regular";
+	font-family: "Jerio-ExtrudeRight";
 	text-align: center;
-	font-size: 50px;
+	font-size: 70px;
 	color: #ecece1;
-	background-color: #e987aa;
-	width: 550px;
-	letter-spacing: 2px;
+	width: 630px;
+	letter-spacing: 9px;
 	border: solid #ecece1 5px;
 	padding: 10px;
 
@@ -106,11 +105,11 @@ const Header = styled.h1`
 
 const Button = styled.button`
 	color: #ecece1;
-	font-family: "ppneuebit-bold";
+	font-family: "Ginora-Sans";
 	width: 100%;
 	align-content: center;
 	height: 55px;
-	font-size: 25px;
+	font-size: 20px;
 	cursor: pointer;
 	transition: all 0.6s ease;
 	background-color: transparent;

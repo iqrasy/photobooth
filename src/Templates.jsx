@@ -41,7 +41,7 @@ const Templates = () => {
 
 			gsap.to("#scramble-text-2", {
 				scrambleText: {
-					text: "build your template",
+					text: "BUILD YOUR TEMPLATE",
 					chars: "upperCase",
 					speed: 0.4,
 				},
@@ -52,7 +52,7 @@ const Templates = () => {
 
 			gsap.to("#scramble-text-1", {
 				scrambleText: {
-					text: "download your picture",
+					text: "DOWNLOAD YOUR PICTURE",
 					chars: "upperCase",
 					speed: 0.4,
 				},
@@ -236,18 +236,22 @@ const Templates = () => {
 							</div>
 						</TemplateContainer>
 					</MainContainer>
-					<ButtonContainer>
+					<div>
 						{download ? (
 							<>
-								<Buttons onClick={handleDownload}>
-									download your picture
-								</Buttons>
-								<Buttons onClick={handleNavigate}>start over</Buttons>
+								<DownloadButton>
+									<Buttons onClick={handleDownload}>
+										download your picture
+									</Buttons>
+									<Buttons onClick={handleNavigate}>start over</Buttons>
+								</DownloadButton>
 							</>
 						) : (
-							<Buttons onClick={handleSave}>save & continue</Buttons>
+							<ButtonContainer>
+								<Buttons onClick={handleSave}>save & continue</Buttons>
+							</ButtonContainer>
 						)}
-					</ButtonContainer>
+					</div>
 				</>
 			)}
 		</>
@@ -271,11 +275,12 @@ const MainContainer = styled.div`
 `;
 
 const Header = styled.h1`
-	font-family: "PPMondwest-regular";
+	font-family: "Jerio-ExtrudeRight";
 	color: #ecece1;
 	text-align: center;
 	margin-top: 50px;
 	font-size: 50px;
+	letter-spacing: 9px;
 
 	@media (max-width: ${theme.breakpoints.sm}) {
 		font-size: 35px;
@@ -287,7 +292,7 @@ const TemplateContainer = styled.div`
 	max-width: 320px;
 	height: auto;
 	max-height: 90vh;
-	margin: 10px auto;
+	margin: 10px 20px;
 	padding: 5px 10px;
 	border-radius: 3px;
 	background-color: ${(props) => props.colourpicked};
@@ -333,7 +338,7 @@ const Input = styled.input`
 	width: 91%;
 	color: #ecece1;
 	font-size: 25px;
-	font-family: "ppneuebit-bold";
+	font-family: "Ginora-Sans";
 
 	&::placeholder {
 		color: #ecece1;
@@ -344,10 +349,10 @@ const Buttons = styled.button`
 	background-color: #e987aa;
 	color: #ecece1;
 	border: solid #ecece1 5px;
-	font-size: 25px;
+	font-size: 20px;
 	padding: 10px 20px;
 	margin: 10px 5px;
-	font-family: "ppneuebit-bold";
+	font-family: "Ginora-Sans";
 	cursor: pointer;
 	transition: all 0.6s ease;
 
@@ -362,10 +367,23 @@ const Buttons = styled.button`
 	}
 `;
 
-const ButtonContainer = styled.div`
+const DownloadButton = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: end;
+	margin: 20px;
+	height: 300px;
+	gap: 20px;
+
+	@media (max-width: ${theme.breakpoints.sm}) {
+		height: 40px;
+	}
+`;
+
+const ButtonContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: start;
 	margin: 20px;
 	height: 300px;
 	gap: 20px;

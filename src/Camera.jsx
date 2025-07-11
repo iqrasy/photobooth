@@ -186,9 +186,9 @@ const Button = styled.button`
 	width: 100%;
 	align-content: center;
 	height: 55px;
-	font-size: 25px;
+	font-size: 20px;
 	cursor: pointer;
-	font-family: "ppneuebit-bold";
+	font-family: "Ginora-Sans";
 	transition: all 0.6s ease;
 
 	&:hover {
@@ -245,7 +245,7 @@ const CountDownButton = styled.button`
 	padding: 10px;
 	border: none;
 	font-size: 40px;
-	font-family: "ppneuebit-bold";
+	font-family: "Ginora-Sans";
 `;
 
 const ButtonContainer = styled.div`
@@ -258,10 +258,10 @@ const Buttons = styled.button`
 	background-color: #e987aa;
 	color: #ecece1;
 	border: solid #ecece1 5px;
-	font-size: 25px;
+	font-size: 20px;
 	padding: 10px 20px;
 	margin: 10px 5px;
-	font-family: "ppneuebit-bold";
+	font-family: "Ginora-Sans";
 	cursor: pointer;
 	transition: all 0.6s ease;
 

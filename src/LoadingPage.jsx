@@ -73,7 +73,8 @@ const MainContainer = styled.div`
 
 const Header = styled.h1`
 	color: #e987aa;
-	font-family: "PPMondwest-regular";
+	font-family: "Jerio-ExtrudeRight";
+	letter-spacing: 9px;
 	font-size: 60px;
 	text-shadow: 0 0 5px #e987aa;
 

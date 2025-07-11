@@ -8,20 +8,15 @@ const DownloadPage = ({ handleNavigate }) => {
 
 	return (
 		<DownloadContainer>
-			{downloadComplete && (
-				<ButtonContainer>
-					<Buttons onClick={handleNavigate}>take more pictures</Buttons>
-				</ButtonContainer>
-			)}
 			<div>
 				{downloadComplete ? (
 					<DownloadContainerHeader className="loading-text">
-						your pictures are ready
+						YOUR PICTURES ARE READY
 					</DownloadContainerHeader>
 				) : (
 					<>
 						<DownloadContainerHeader className="loading-text">
-							constructing your pictures
+							CONSTRUCTING YOUR PICTURES
 						</DownloadContainerHeader>
 						<SpanContainer className="dots">
 							<Span className="dot">.</Span>
@@ -31,6 +26,11 @@ const DownloadPage = ({ handleNavigate }) => {
 					</>
 				)}
 			</div>
+			{downloadComplete && (
+				<ButtonContainer>
+					<Buttons onClick={handleNavigate}>take more pictures</Buttons>
+				</ButtonContainer>
+			)}
 		</DownloadContainer>
 	);
 };
@@ -47,12 +47,13 @@ const DownloadContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	font-family: "ppneuebit-bold";
+	font-family: "Jerio-ExtrudeRight";
 `;
 
 const DownloadContainerHeader = styled.p`
 	color: #e987aa;
-	font-family: "PPMondwest-regular";
+	font-family: "Jerio-ExtrudeRight";
+	letter-spacing: 9px;
 	font-size: 50px;
 	text-shadow: 0 0 5px #e987aa;
 	text-align: center;
@@ -84,10 +85,10 @@ const Buttons = styled.button`
 	background-color: #e987aa;
 	color: #ecece1;
 	border: solid #ecece1 5px;
-	font-size: 25px;
+	font-size: 20px;
 	padding: 10px 20px;
 	margin: 10px 5px;
-	font-family: "ppneuebit-bold";
+	font-family: "Ginora-Sans";
 	cursor: pointer;
 	transition: all 0.6s ease;
 

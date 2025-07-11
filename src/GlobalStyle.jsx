@@ -4,20 +4,19 @@ import cursor from "./assets/cursor.png";
 const GlobalStyle = createGlobalStyle`
 
 @font-face {
-  font-family: 'ppneuebit-bold';
-    src: url('/fonts/ppneuebit-bold.otf') format('truetype');
+  font-family: 'Jerio-ExtrudeRight';
+    src: url('/fonts/Jerio-ExtrudeRight.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+
 
 @font-face {
-  font-family: 'PPMondwest-regular';
-    src: url('/fonts/PPMondwest-regular.otf') format('truetype');
+  font-family: 'Ginora-Sans';
+    src: url('/fonts/Ginora-Sans.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
-
-
 
     
 * {
